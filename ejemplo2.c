@@ -1,3 +1,5 @@
+//gcc ejemplo2.c -fsanitize=address -static-libasan -g
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,20 +12,20 @@ void optionOne(){
     printf("string is: %s\n", s);
     free(s);
 }
-
+//No libera la memoria asociada
 void optionTwo(){
     char *s = (char *) malloc(100);
     strcpy(s, "Welcome Sanitizer!");
     printf("string is: %s\n", s);
 }
-
+//Libera la memoria antes de ralizar la operacion strcpy utilizando el heap despues
 void optionThree(){
     char *s = (char *) malloc(100);
     free(s);
     strcpy(s, "Welcome Sanitizer!");
     printf("string is: %s\n", s);
 }
-
+//Escribe 19 bytes en 18 produciendo un heap-buffer-overflow
 void optionFour(){
     char *s = (char *) malloc(18);
     strcpy(s,  "Welcome Sanitizer!");
